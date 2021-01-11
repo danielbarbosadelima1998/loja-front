@@ -1,25 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Route, Switch, BrowserRouter, Link } from "react-router-dom";
+import { Container } from "reactstrap";
 
-function App() {
+import Home from "./views/Home";
+import Login from "./views/Login";
+import Register from "./views/Register";
+import ForgotPassword from "./views/ForgotPassword";
+import Users from "./views/Users";
+import Products from "./views/Product";
+import Categories from "./views/Category";
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container fluid={false}>
+      <BrowserRouter>
+        <Link to="/users">USUÁRIOS</Link> - <Link to="/products">PRODUTOS</Link>{" "}
+        - <Link to="/categories">CATEGORIAS</Link>
+        <br />
+        <br />
+        <hr />
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/register" component={Register} />
+          <Route exact path="/forgot-password" component={ForgotPassword} />
+
+          <Route path="/users" component={Users} />
+          <Route path="/products" component={Products} />
+          <Route path="/categories" component={Categories} />
+        </Switch>
+      </BrowserRouter>
+    </Container>
   );
-}
+};
 
 export default App;
