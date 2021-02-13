@@ -1,4 +1,8 @@
 import {
+  FETCH_ONE_USER,
+  FETCH_ONE_USER_STARTED,
+  FETCH_ONE_USER_SUCCESS,
+  FETCH_ONE_USER_FAILED,
   FETCH_MANY_USERS,
   FETCH_MANY_USERS_STARTED,
   FETCH_MANY_USERS_SUCCESS,
@@ -38,9 +42,24 @@ const initialState = {
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
+    // FETCH_ONE_USER
+    case FETCH_ONE_USER:
+      return state;
+    case FETCH_ONE_USER_STARTED:
+      return { ...state, isLoading: true, error: false };
+    case FETCH_ONE_USER_SUCCESS:
+      return {
+        ...state,
+        currentData: action.payload,
+        isLoading: false,
+        error: false,
+      };
+    case FETCH_ONE_USER_FAILED:
+      return { ...state, isLoading: false, error: true };
+
     // FETCH_MANY_USERS
     case FETCH_MANY_USERS:
-      return { ...state, ...action.payload };
+      return state;
     case FETCH_MANY_USERS_STARTED:
       return { ...state, isLoading: true, error: false };
     case FETCH_MANY_USERS_SUCCESS:
@@ -54,7 +73,7 @@ const userReducer = (state = initialState, action) => {
 
     // CREATE_USER
     case CREATE_USER:
-      return { ...state, ...action.payload };
+      return state;
     case CREATE_USER_STARTED:
       return { ...state, isLoading: true, error: false };
     case CREATE_USER_SUCCESS:

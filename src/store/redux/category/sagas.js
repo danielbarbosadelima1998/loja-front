@@ -83,6 +83,7 @@ function* deleteCategoryById({ payload }) {
     yield put(deleteCategoryStarted(payload));
 
     const category = yield call(destroyOneById, "/categories", payload);
+
     yield put(deleteCategorySuccess(category));
   } catch (e) {
     yield put(deleteCategoryFailed(payload));

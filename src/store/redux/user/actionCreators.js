@@ -1,4 +1,8 @@
 import {
+  FETCH_ONE_USER,
+  FETCH_ONE_USER_STARTED,
+  FETCH_ONE_USER_SUCCESS,
+  FETCH_ONE_USER_FAILED,
   FETCH_MANY_USERS,
   FETCH_MANY_USERS_STARTED,
   FETCH_MANY_USERS_SUCCESS,
@@ -20,6 +24,27 @@ import {
   DELETE_USER_SUCCESS,
   DELETE_USER_FAILED,
 } from "./actions";
+
+// FETCH_ONE_USER
+export const fetchOneUser = (payload) => ({
+  type: FETCH_ONE_USER,
+  payload,
+});
+
+export const fetchOneUserStarted = (payload) => ({
+  type: FETCH_ONE_USER_STARTED,
+  payload,
+});
+
+export const fetchOneUserSuccess = (payload) => ({
+  type: FETCH_ONE_USER_SUCCESS,
+  payload,
+});
+
+export const fetchOneUserFailed = (payload) => ({
+  type: FETCH_ONE_USER_FAILED,
+  payload,
+});
 
 // FETCH_MANY_USERS
 export const fetchManyUsers = (payload) => ({

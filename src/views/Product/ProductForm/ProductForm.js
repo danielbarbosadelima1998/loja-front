@@ -138,6 +138,10 @@ const ProductForm = () => {
               }
               value={categories.find((c) => c.id === model.categoryId)?.name}
             >
+              <option hidden value="">
+                Categoria
+              </option>
+
               {categories?.map((c) => (
                 <option key={c.id}>{c.name}</option>
               ))}

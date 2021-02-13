@@ -91,10 +91,10 @@ function* deleteProductById({ payload }) {
 }
 
 function* watcherProduct() {
+  yield all([takeLatest(FETCH_ONE_PRODUCT, fetchOneProductById)]);
   yield all([takeLatest(FETCH_MANY_PRODUCTS, fetchManyProducts)]);
   yield all([takeLatest(CREATE_PRODUCT, createProduct)]);
   yield all([takeLatest(UPDATE_PRODUCT, updateProduct)]);
-  yield all([takeLatest(FETCH_ONE_PRODUCT, fetchOneProductById)]);
   yield all([takeLatest(DELETE_PRODUCT, deleteProductById)]);
 }
 

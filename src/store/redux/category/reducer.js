@@ -106,15 +106,10 @@ const categoryReducer = (state = initialState, action) => {
     case DELETE_CATEGORY_STARTED:
       return { ...state, isLoading: true, error: false };
     case DELETE_CATEGORY_SUCCESS:
+      const index = state.data.findIndex((i) => i.id === action.payload.id);
       return {
         ...state,
-        data: [
-          ...state.data.slice(0, state.data.indexOf(action.payload.data.id)),
-          ...state.data.slice(
-            0,
-            state.data.indexOf(action.payload.data.id) + 1
-          ),
-        ],
+        data: [...state.data.slice(0, index), ...state.data.slice(index + 1)],
         isLoading: false,
         error: false,
       };

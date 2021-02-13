@@ -1,13 +1,17 @@
-import React, { useEffect, useState, useCallback, memo } from "react";
+import React, { useEffect, useState, useCallback, memo, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import orderBy from "lodash/orderBy";
 import Icon from "../../../components/Icon";
 import { Table, Button } from "reactstrap";
 import formatDate from "../../../utils/formatDate";
 import Loading from "../../../components/Loading";
 import { fetchManyUsers } from "../../../store/redux/user/actionCreators";
+import { Switch, Route } from "react-router-dom";
+import UserForm from "../UserForm";
+import UserDelete from "../UserDelete";
 
-const UsersIndex = () => {
+const UserIndex = () => {
   const initialColumnsOrder = {
     username: "",
     email: "",
@@ -25,9 +29,11 @@ const UsersIndex = () => {
 
   const dispatch = useDispatch();
 
-  const usersData = useSelector((state) => state.user);
+  const history = useHistory();
 
-  const { data } = usersData;
+  const { data, isLoading } = useSelector((state) => state.user);
+
+  const query = useMemo(() => ({}), []);
 
   const fetch = useCallback(
     async (query) => await dispatch(fetchManyUsers(query)),
@@ -37,6 +43,13 @@ const UsersIndex = () => {
   useEffect(() => {
     fetch();
   }, [fetch]);
+
+  useEffect(() => {
+    if (history.location.state?.refresh) {
+      fetch(query);
+      history.location.state.refresh = false;
+    }
+  }, [history.location.state, fetch, query]);
 
   useEffect(() => {
     setUsers(data);
@@ -72,14 +85,25 @@ const UsersIndex = () => {
         break;
     }
   };
+  const handleForm = (id) => {
+    if (id) {
+      history.push(`/users/${id}/edit`);
+    } else {
+      history.push("/users/create");
+    }
+  };
 
-  if (!users.length && usersData.isLoading) return <Loading />;
-  if (!users.length && !usersData.isLoading) return <div>Sem registros.</div>;
+  const handleDelete = (id) => {
+    history.push(`/users/${id}/delete`);
+  };
+
   return (
     <div>
       <h3 className="m-0">Listar - Usuários</h3>
       <div className="float-right mb-2">
-        <Button color="success">Nova Categoria</Button>
+        <Button color="success" onClick={handleForm}>
+          Novo usuário
+        </Button>
       </div>
 
       <Table size="sm" responsive bordered hover>
@@ -121,30 +145,53 @@ const UsersIndex = () => {
           </tr>
         </thead>
         <tbody>
-          {users.map((user, index) => (
-            <tr key={user.id}>
-              <th scope="row">{index}</th>
-              <td>{user.username}</td>
-              <td>{user.email}</td>
-              <td>{formatDate(user.createdAt)}</td>
-              <td>
-                <Button size="sm" color="primary">
-                  Editar
-                </Button>
-              </td>
-              <td>
-                <Button size="sm" color="danger">
-                  Deletar
-                </Button>
+          {!data.length ? (
+            <tr>
+              <td colSpan="10" style={{ textAlign: "center" }}>
+                {!isLoading ? (
+                  "Sem registros."
+                ) : (
+                  <Loading type="border" size="sm" />
+                )}
               </td>
             </tr>
-          ))}
+          ) : (
+            users.map((user, index) => (
+              <tr key={user.id}>
+                <th scope="row">{index}</th>
+                <td>{user.username}</td>
+                <td>{user.email}</td>
+                <td>{formatDate(user.createdAt)}</td>
+                <td>
+                  <Button
+                    size="sm"
+                    color="primary"
+                    onClick={() => handleForm(user.id)}
+                  >
+                    Editar
+                  </Button>
+                </td>
+                <td>
+                  <Button
+                    size="sm"
+                    color="danger"
+                    onClick={() => handleDelete(user.id)}
+                  >
+                    Deletar
+                  </Button>
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </Table>
-      {/* <CardFooter>
-        <Pagination {...{ ...omit(usersData, ["data", "isLoading"]), fetch }} />
-      </CardFooter> */}
+      <Switch>
+        <Route exact path="/users/:id/edit" component={UserForm} />
+        {/* <Route exact path="/users/:id" component={UserShow} /> */}
+        <Route exact path="/users/create" component={UserForm} />
+        <Route exact path="/users/:id/delete" component={UserDelete} />
+      </Switch>
     </div>
   );
 };
-export default memo(UsersIndex);
+export default memo(UserIndex);

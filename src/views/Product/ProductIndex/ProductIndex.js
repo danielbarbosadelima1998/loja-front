@@ -58,7 +58,7 @@ const ProductIndex = (props) => {
         </Button>
       </div>
 
-      <Table size="sm" responsive hover>
+      <Table size="sm" responsive bordered hover>
         <thead>
           <tr>
             <th>#</th>

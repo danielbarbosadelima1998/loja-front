@@ -6,9 +6,9 @@ import Home from "./views/Home";
 import Login from "./views/Login";
 import Register from "./views/Register";
 import ForgotPassword from "./views/ForgotPassword";
-import Users from "./views/Users";
-import Products from "./views/Product";
-import Categories from "./views/Category";
+import User from "./views/User";
+import Product from "./views/Product";
+import Category from "./views/Category";
 
 const App = () => {
   return (
@@ -25,9 +25,9 @@ const App = () => {
           <Route exact path="/register" component={Register} />
           <Route exact path="/forgot-password" component={ForgotPassword} />
 
-          <Route path="/users" component={Users} />
-          <Route path="/products" component={Products} />
-          <Route path="/categories" component={Categories} />
+          <Route path="/users" component={User} />
+          <Route path="/products" component={Product} />
+          <Route path="/categories" component={Category} />
         </Switch>
       </BrowserRouter>
     </Container>

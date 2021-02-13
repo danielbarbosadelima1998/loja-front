@@ -57,6 +57,7 @@ const CategoryIndex = (props) => {
       <Table
         size="sm"
         responsive
+        bordered
         hover
       >
         <thead>
